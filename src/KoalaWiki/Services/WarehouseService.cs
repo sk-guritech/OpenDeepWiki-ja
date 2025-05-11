@@ -13,12 +13,12 @@ namespace KoalaWiki.Services;
 public class WarehouseService(IKoalaWikiContext access, IMapper mapper, WarehouseStore warehouseStore) : FastApi
 {
     /// <summary>
-    /// 查询上次提交的仓库
+    /// 最後にコミットされたリポジトリを取得する
     /// </summary>
     /// <returns></returns>
     public async Task<object> GetLastWarehouseAsync(string address)
     {
-        // 判断是否.git结束，如果不是需要添加
+        // .git で終わっていない場合は追加
         if (!address.EndsWith(".git"))
         {
             address += ".git";
@@ -29,10 +29,10 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
             .Where(x => x.Address == address)
             .FirstOrDefaultAsync();
 
-        // 如果没有找到仓库，返回空列表
+        // リポジトリが見つからない場合は例外
         if (query == null)
         {
-            throw new NotFoundException("仓库不存在");
+            throw new NotFoundException("リポジトリが存在しません");
         }
 
         return new
@@ -53,10 +53,10 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
             .Where(x => x.Name == name && x.OrganizationName == owner)
             .FirstOrDefaultAsync();
 
-        // 如果没有找到仓库，返回空列表
+        // リポジトリが見つからない場合は例外
         if (warehouse == null)
         {
-            throw new NotFoundException("仓库不存在");
+            throw new NotFoundException("リポジトリが存在しません");
         }
 
         var commit = await access.DocumentCommitRecords.FirstOrDefaultAsync(x => x.WarehouseId == warehouse.Id);
@@ -65,7 +65,7 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
     }
 
     /// <summary>
-    /// 提交仓库
+    /// リポジトリを登録する
     /// </summary>
     public async Task SubmitWarehouseAsync(WarehouseInput input, HttpContext context)
     {
@@ -77,15 +77,14 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
             }
 
             var value = await access.Warehouses.FirstOrDefaultAsync(x => x.Address == input.Address);
-            // 判断这个仓库是否已经添加
+            // 同じアドレスのリポジトリが既に存在するかチェック
             if (value?.Status is WarehouseStatus.Completed or WarehouseStatus.Pending or WarehouseStatus.Processing)
-
             {
-                throw new Exception("存在相同名称的渠道");
+                throw new Exception("同じリポジトリが既に存在します");
             }
 
-            // 删除旧的仓库
-            var oldWarehouse = await access.Warehouses
+            // 古いリポジトリ情報を削除
+            await access.Warehouses
                 .Where(x => x.Address == input.Address)
                 .ExecuteDeleteAsync();
 
@@ -109,7 +108,7 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
             await context.Response.WriteAsJsonAsync(new
             {
                 code = 200,
-                message = "提交成功"
+                message = "登録に成功しました"
             });
         }
         catch (Exception e)
@@ -123,7 +122,7 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
     }
 
     /// <summary>
-    /// 获取仓库概述
+    /// リポジトリの概要を取得する
     /// </summary>
     public async Task GetWarehouseOverviewAsync(string owner, string name, HttpContext context)
     {
@@ -132,10 +131,10 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
             .Where(x => x.Name == name && x.OrganizationName == owner)
             .FirstOrDefaultAsync();
 
-        // 如果没有找到仓库，返回空列表
+        // リポジトリが見つからない場合は例外
         if (query == null)
         {
-            throw new NotFoundException("仓库不存在");
+            throw new NotFoundException("リポジトリが存在しません");
         }
 
         var document = await access.Documents
@@ -147,7 +146,7 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
 
         if (overview == null)
         {
-            throw new NotFoundException("没有找到概述");
+            throw new NotFoundException("概要が見つかりません");
         }
 
         await context.Response.WriteAsJsonAsync(new
@@ -158,12 +157,12 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
     }
 
     /// <summary>
-    /// 获取仓库列表的异步方法，支持分页和关键词搜索。
+    /// リポジトリ一覧を取得する（ページングおよびキーワード検索対応）
     /// </summary>
-    /// <param name="page">当前页码，从1开始。</param>
-    /// <param name="pageSize">每页显示的记录数。</param>
-    /// <param name="keyword">搜索关键词，用于匹配仓库名称或地址。</param>
-    /// <returns>返回一个包含总记录数和当前页仓库数据的分页结果对象。</returns>
+    /// <param name="page">現在のページ（1始まり）</param>
+    /// <param name="pageSize">1ページあたりの件数</param>
+    /// <param name="keyword">検索キーワード（リポジトリ名またはアドレスにマッチ）</param>
+    /// <returns>総件数とリポジトリリストを含むページDTO</returns>
     public async Task<PageDto<Warehouse>> GetWarehouseListAsync(int page, int pageSize, string keyword)
     {
         var query = access.Warehouses
@@ -204,7 +203,7 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
         return new PageDto<Warehouse>(total, list);
     }
 
-    [EndpointSummary("获取指定仓库代码文件")]
+    [EndpointSummary("指定したリポジトリ内のコードファイルを取得する")]
     public async Task<ResultDto<string>> GetFileContent(string warehouseId, string path)
     {
         var query = await access.Documents
@@ -214,7 +213,7 @@ public class WarehouseService(IKoalaWikiContext access, IMapper mapper, Warehous
 
         if (query == null)
         {
-            throw new NotFoundException("文件不存在");
+            throw new NotFoundException("ファイルが存在しません");
         }
 
         var fileFunction = new FileFunction(query.GitPath);
