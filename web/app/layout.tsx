@@ -6,14 +6,14 @@ import '@ant-design/v5-patch-for-react-19';
 import Script from 'next/script';
 import { Metadata } from 'next';
 
-// 设置基础元数据
+// 基本メタデータを設定
 export const metadata: Metadata = {
   title: {
     template: '%s | OpenDeekWiki',
-    default: 'OpenDeekWiki - 开源知识管理平台',
+    default: 'OpenDeekWiki - オープンソースナレッジ管理プラットフォーム',
   },
-  description: 'KoalaWiki是一个功能强大的开源知识库和文档管理平台，帮助团队高效管理和共享技术文档、API文档和知识资源。',
-  keywords: ['OpenDeekWiki', '知识库', '文档管理', '技术文档', 'API文档', '开源'],
+  description: 'KoalaWikiは強力なオープンソースナレッジベースおよびドキュメント管理プラットフォームで、チームが技術ドキュメント、APIドキュメント、ナレッジリソースを効率的に管理・共有できるよう支援します。',
+  keywords: ['OpenDeekWiki', 'ナレッジベース', 'ドキュメント管理', '技術ドキュメント', 'APIドキュメント', 'オープンソース'],
   authors: [{ name: 'OpenDeekWiki Team' }],
   creator: 'OpenDeekWiki',
   publisher: 'OpenDeekWiki',
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'OpenDeekWiki - 开源知识管理平台',
-    description: 'KoalaWiki是一个功能强大的开源知识库和文档管理平台，帮助团队高效管理和共享技术文档、API文档和知识资源。',
+    title: 'OpenDeekWiki - オープンソースナレッジ管理プラットフォーム',
+    description: 'KoalaWikiは強力なオープンソースナレッジベースおよびドキュメント管理プラットフォームで、チームが技術ドキュメント、APIドキュメント、ナレッジリソースを効率的に管理・共有できるよう支援します。',
     url: 'https://opendeep.wiki',
     siteName: 'OpenDeekWiki',
     locale: 'zh_CN',
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'OpenDeekWiki - 开源知识管理平台',
-    description: 'KoalaWiki是一个功能强大的开源知识库和文档管理平台，帮助团队高效管理和共享技术文档、API文档和知识资源。',
+    title: 'OpenDeekWiki - オープンソースナレッジ管理プラットフォーム',
+    description: 'KoalaWikiは強力なオープンソースナレッジベースおよびドキュメント管理プラットフォームで、チームが技術ドキュメント、APIドキュメント、ナレッジリソースを効率的に管理・共有できるよう支援します。',
     creator: '@OpenDeekWiki',
   },
   robots: {
@@ -65,7 +65,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // 从环境变量NEXT_PUBLIC_API_URL读取
+  // 環境変数 NEXT_PUBLIC_API_URL から読み込み
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || '';
 
   return (
@@ -74,7 +74,7 @@ export default function RootLayout({
         <meta name="msvalidate.01" content="61D1D1BFCB7FDB548E411C30FC69B058" />
         <meta name="baidu-site-verification" content="44a79feb3bf1e77660bdbc00e1808896" />
         <link rel="icon" href="/favicon.ico" />
-        <Script >
+        <Script>
           {`
             var _hmt = _hmt || [];
             (function() {
@@ -86,7 +86,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body >
+      <body>
         <Script id="api-url"
           type="text/javascript"
           strategy="afterInteractive"
@@ -94,10 +94,9 @@ export default function RootLayout({
             __html: `
               console.log('API_URL', '${apiUrl}');
               window.API_URL = '${apiUrl}';
-              `
+            `
           }}
         />
-
 
         <AntdRegistry>
           <ConfigProvider
@@ -114,5 +113,5 @@ export default function RootLayout({
         </AntdRegistry>
       </body>
     </html>
-  )
+  );
 }
