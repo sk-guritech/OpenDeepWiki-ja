@@ -72,7 +72,7 @@ export default function OrganizationPage({ params }: any) {
   // 加载仓库数据
   useEffect(() => {
     fetchRepositories();
-  }, [owner,searchValue]);
+  }, [owner, searchValue]);
 
   // 过滤仓库
   // useEffect(() => {
@@ -125,7 +125,7 @@ export default function OrganizationPage({ params }: any) {
     try {
       // 这里获取所有仓库然后前端过滤属于该组织的仓库
       // 实际应用中可能需要后端支持按组织过滤的 API
-      const response = await getWarehouse(1, 100,searchValue);
+      const response = await getWarehouse(1, 100, searchValue);
       if (response.success && response.data) {
         // 过滤出属于该组织的仓库
         const orgRepos = response.data.items.filter(repo => {
@@ -161,13 +161,13 @@ export default function OrganizationPage({ params }: any) {
     completedRepos: repositories.filter(repo => repo.status === 2).length,
     lastUpdated: repositories.length ? new Date(
       Math.max(...repositories.map(repo => new Date(repo.updatedAt || repo.createdAt).getTime()))
-    ).toLocaleDateString('zh-CN') : '-'
+    ).toLocaleDateString('ja-JP') : '-'
   };
 
   // 格式化日期
   const formatDate = (dateString: string) => {
     if (!dateString) return '未知';
-    return new Date(dateString).toLocaleDateString('zh-CN');
+    return new Date(dateString).toLocaleDateString('ja-JP');
   };
 
   return (
@@ -494,7 +494,7 @@ export default function OrganizationPage({ params }: any) {
                               </Tag>
                               <Text ellipsis style={{ maxWidth: '150px' }}>{repo.name}</Text>
                               <Text type="secondary" style={{ fontSize: token.fontSizeSM }}>
-                                {new Date(repo.updatedAt || repo.createdAt).toLocaleDateString('zh-CN')}
+                                {new Date(repo.updatedAt || repo.createdAt).toLocaleDateString('ja-JP')}
                               </Text>
                             </Space>
                           </Link>

@@ -138,7 +138,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
             <div className="repo-details">
               <span className="repo-date">
                 <ClockCircleOutlined />
-                {new Date(repository.createdAt).toLocaleDateString('zh-CN')}
+                {new Date(repository.createdAt).toLocaleDateString('ja-JP')}
               </span>
             </div>
 
