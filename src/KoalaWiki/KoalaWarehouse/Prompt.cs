@@ -16,7 +16,7 @@ public static class Prompt
         }
     }
 
-    public static string Language => $"Always respond in {_language}\n";
+    public static string Language => $"応答は必ず{_language}\n";
 
 
     public static string DeepFirstPrompt =>
