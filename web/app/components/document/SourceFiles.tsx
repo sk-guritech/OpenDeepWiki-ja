@@ -19,7 +19,7 @@ interface SourceFilesProps {
   owner: string;
   name: string;
   token: any;
-  git:string;
+  git: string;
   branch?: string;
 }
 
@@ -37,24 +37,24 @@ const SourceFiles: React.FC<SourceFilesProps> = ({
     <Collapse
       ghost
       expandIcon={({ isActive }) => (
-        <CaretRightOutlined 
+        <CaretRightOutlined
           rotate={isActive ? 90 : 0}
           style={{ color: token.colorTextTertiary }}
         />
       )}
       activeKey={activeKey}
       onChange={(key) => setActiveKey(key)}
-      style={{ 
+      style={{
         marginBottom: token.marginMD,
         backgroundColor: 'transparent',
         borderRadius: token.borderRadius,
         border: `1px solid ${token.colorBorderSecondary}`
       }}
     >
-      <Collapse.Panel 
+      <Collapse.Panel
         header={
-          <Text strong style={{ color: token.colorText }}>相关源文件</Text>
-        } 
+          <Text strong style={{ color: token.colorText }}>関連ソースファイル</Text>
+        }
         key="sourceFiles"
         style={{ padding: token.paddingXS }}
       >
@@ -64,14 +64,14 @@ const SourceFiles: React.FC<SourceFilesProps> = ({
           split={false}
           renderItem={(item) => (
             <List.Item style={{ padding: `${token.paddingXXS}px 0` }}>
-              <Link 
+              <Link
                 href={`${git}/blob/${branch}/${item.address}`}
                 target="_blank"
-                style={{ 
+                style={{
                   color: token.colorPrimary,
                   display: 'flex',
                   alignItems: 'center',
-                  // 鼠标悬浮样式
+                  // hover時のスタイル
                   // @ts-ignore
                   '&:hover': {
                     textDecoration: 'underline',
@@ -90,4 +90,4 @@ const SourceFiles: React.FC<SourceFilesProps> = ({
   );
 };
 
-export default SourceFiles; 
+export default SourceFiles;
