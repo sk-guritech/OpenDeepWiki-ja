@@ -107,11 +107,11 @@ export default function OrganizationPage({ params }: any) {
         }
       }
     } catch (error) {
-      console.error('获取组织信息出错:', error);
+      console.error('組織情報の取得に失敗しました:', error);
       // 如果获取失败，设置一些默认信息
       setOrgInfo({
         name: owner,
-        description: `${owner} 的代码仓库`,
+        description: `${owner} のリポジトリ`,
         created_at: null,
         isDefault: true
       });
@@ -148,7 +148,7 @@ export default function OrganizationPage({ params }: any) {
         setTotal(orgRepos.length);
       }
     } catch (error) {
-      console.error('获取仓库列表出错:', error);
+      console.error('リポジトリの一覧を取得できませんでした:', error);
     } finally {
       setLoading(false);
     }
@@ -166,7 +166,7 @@ export default function OrganizationPage({ params }: any) {
 
   // 格式化日期
   const formatDate = (dateString: string) => {
-    if (!dateString) return '未知';
+    if (!dateString) return '不明';
     return new Date(dateString).toLocaleDateString('ja-JP');
   };
 
@@ -208,10 +208,10 @@ export default function OrganizationPage({ params }: any) {
                       {orgInfo?.name || owner}
                     </Title>
                     <Tag color="blue" icon={orgInfo?.isUser ? <UserOutlined /> : <TeamOutlined />}>
-                      {orgInfo?.isUser ? '个人用户' : '组织'}
+                      {orgInfo?.isUser ? '個人ユーザー' : '組織'}
                     </Tag>
                     {!orgInfo?.isDefault && (
-                      <Tooltip title="访问 GitHub">
+                      <Tooltip title="アクセス GitHub">
                         <a
                           href={`https://github.com/${owner}`}
                           target="_blank"
@@ -231,7 +231,7 @@ export default function OrganizationPage({ params }: any) {
                       maxWidth: '100%'
                     }}
                   >
-                    {orgInfo?.description || `${owner} 的代码仓库知识库，一站式查看所有代码文档`}
+                    {orgInfo?.description || `${owner} のコードドキュメント集。ここで全てをまとめて確認できます。`}
                   </Paragraph>
                 </div>
               </Space>
@@ -240,21 +240,21 @@ export default function OrganizationPage({ params }: any) {
               <Row gutter={[16, 16]}>
                 <Col span={8}>
                   <Statistic
-                    title={<Typography.Text type="secondary">仓库总数</Typography.Text>}
+                    title={<Typography.Text type="secondary">リポジトリ総数	</Typography.Text>}
                     value={stats.totalRepositories}
                     prefix={<DatabaseOutlined style={{ color: token.colorPrimary }} />}
                   />
                 </Col>
                 <Col span={8}>
                   <Statistic
-                    title={<Typography.Text type="secondary">Git仓库</Typography.Text>}
+                    title={<Typography.Text type="secondary">Gitリポジトリ</Typography.Text>}
                     value={stats.gitRepos}
                     prefix={<GithubOutlined style={{ color: token.colorPrimary }} />}
                   />
                 </Col>
                 <Col span={8}>
                   <Statistic
-                    title={<Typography.Text type="secondary">已完成</Typography.Text>}
+                    title={<Typography.Text type="secondary">完了済み</Typography.Text>}
                     value={stats.completedRepos}
                     prefix={<CodeOutlined style={{ color: token.colorPrimary }} />}
                   />
@@ -267,23 +267,23 @@ export default function OrganizationPage({ params }: any) {
           <Divider style={{ margin: `${token.marginMD}px 0` }} />
 
           <Descriptions
-            title="详细信息"
+            title="詳細情報"
             bordered
             column={{ xs: 1, sm: 2, md: 3 }}
             size="small"
             labelStyle={{ width: '120px' }}
           >
             <Descriptions.Item
-              label="创建时间"
+              label="作成日時"
               span={1}
             >
               <Space>
                 <CalendarOutlined style={{ color: token.colorPrimary }} />
-                {orgInfo?.created_at ? formatDate(orgInfo.created_at) : '未知'}
+                {orgInfo?.created_at ? formatDate(orgInfo.created_at) : '不明'}
               </Space>
             </Descriptions.Item>
             <Descriptions.Item
-              label="最近更新"
+              label="最終更新"
               span={1}
             >
               <Space>
@@ -292,12 +292,12 @@ export default function OrganizationPage({ params }: any) {
               </Space>
             </Descriptions.Item>
             <Descriptions.Item
-              label="类型"
+              label="タイプ"
               span={1}
             >
               <Space>
                 {orgInfo?.isUser ? <UserOutlined style={{ color: token.colorPrimary }} /> : <TeamOutlined style={{ color: token.colorPrimary }} />}
-                {orgInfo?.isUser ? '个人用户' : '组织账户'}
+                {orgInfo?.isUser ? '個人ユーザー' : '組織アカウント'}
               </Space>
             </Descriptions.Item>
 
@@ -311,7 +311,7 @@ export default function OrganizationPage({ params }: any) {
             )}
 
             {orgInfo?.blog && (
-              <Descriptions.Item label="网站" span={orgInfo?.location ? 1 : 3}>
+              <Descriptions.Item label="ウェブサイト" span={orgInfo?.location ? 1 : 3}>
                 <Space>
                   <LinkOutlined style={{ color: token.colorPrimary }} />
                   <a href={orgInfo.blog.startsWith('http') ? orgInfo.blog : `https://${orgInfo.blog}`} target="_blank" rel="noopener noreferrer">
@@ -322,7 +322,7 @@ export default function OrganizationPage({ params }: any) {
             )}
 
             {orgInfo?.bio && (
-              <Descriptions.Item label="简介" span={3}>
+              <Descriptions.Item label="概要" span={3}>
                 {orgInfo.bio}
               </Descriptions.Item>
             )}
@@ -334,7 +334,7 @@ export default function OrganizationPage({ params }: any) {
           title={
             <Space>
               <FileTextOutlined style={{ color: token.colorPrimary }} />
-              <span>文档概览</span>
+              <span>ドキュメント概要</span>
             </Space>
           }
           style={{
@@ -345,14 +345,14 @@ export default function OrganizationPage({ params }: any) {
         >
           <Row gutter={[24, 24]}>
             <Col xs={24} md={16}>
-              <Title level={4}>关于 {orgInfo?.name || owner}</Title>
+              <Title level={4}>について {orgInfo?.name || owner}</Title>
               <Paragraph>
-                {orgInfo?.description || orgInfo?.bio || `${owner} 是一个代码仓库集合，提供了各种项目的源代码和文档。`}
+                {orgInfo?.description || orgInfo?.bio || `${owner} リポジトリの集合であり、さまざまなプロジェクトのソースコードとドキュメントを提供しています。`}
               </Paragraph>
 
               <Divider style={{ margin: `${token.marginMD}px 0` }} />
 
-              <Title level={4}>快速链接</Title>
+              <Title level={4}>ショートカットリンク</Title>
               <Row gutter={[16, 16]}>
                 <Col xs={24} sm={12}>
                   <Card
@@ -363,9 +363,9 @@ export default function OrganizationPage({ params }: any) {
                     <Space>
                       <GithubOutlined style={{ fontSize: 20, color: token.colorPrimary }} />
                       <div>
-                        <Text strong>GitHub 主页</Text>
+                        <Text strong>GitHub プロフィール</Text>
                         <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-                          访问 {owner} 的 GitHub 主页
+                          {owner} の GitHub プロフィールを表示
                         </Paragraph>
                       </div>
                     </Space>
@@ -390,9 +390,9 @@ export default function OrganizationPage({ params }: any) {
                       <Space>
                         <CodeOutlined style={{ fontSize: 20, color: token.colorPrimary }} />
                         <div>
-                          <Text strong>热门仓库</Text>
+                          <Text strong>注目のリポジトリ</Text>
                           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-                            查看最新更新的仓库文档
+                            最新の更新リポジトリのドキュメントを見る
                           </Paragraph>
                         </div>
                       </Space>
@@ -403,43 +403,43 @@ export default function OrganizationPage({ params }: any) {
 
               <Divider style={{ margin: `${token.marginMD}px 0` }} />
 
-              <Title level={4}>使用指南</Title>
+              <Title level={4}>利用ガイド</Title>
               <Paragraph>
-                您可以通过点击下方仓库列表中的仓库查看详细文档。每个仓库都包含了由 AI 自动生成的全面文档，帮助您理解代码结构和工作原理。
+                下のリポジトリ一覧から任意のリポジトリをクリックすることで、詳細なドキュメントを確認できます。各リポジトリには、AI によって自動生成された包括的なドキュメントが含まれており、コード構造や動作原理の理解に役立ちます。
               </Paragraph>
               <Paragraph>
-                文档内容包括：
+                ドキュメントの内容には以下が含まれます：
               </Paragraph>
               <ul>
                 <li>
-                  <Text strong>代码结构解析</Text> - 详细说明项目的组织结构和主要组件
+                  <Text strong>コード構造の解析</Text> - プロジェクトの構成と主要コンポーネントの詳細
                 </li>
                 <li>
-                  <Text strong>API 文档</Text> - 关键功能和接口的详细说明
+                  <Text strong>API ドキュメント</Text> - 主要な機能とインターフェースの詳細な説明
                 </li>
                 <li>
-                  <Text strong>实现细节</Text> - 核心算法和设计模式的实现说明
+                  <Text strong>実装の詳細</Text> - コアアルゴリズムや設計パターンの実装に関する解説
                 </li>
                 <li>
-                  <Text strong>使用示例</Text> - 如何使用和集成项目的示例
+                  <Text strong>使用例</Text> - プロジェクトの使用方法や統合手順の例
                 </li>
               </ul>
             </Col>
 
             <Col xs={24} md={8}>
               <Card
-                title="文档统计"
+                title="ドキュメント統計"
                 size="small"
                 style={{ marginBottom: token.marginMD }}
               >
                 <Statistic
-                  title="仓库总数"
+                  title="リポジトリ総数"
                   value={stats.totalRepositories}
                   prefix={<DatabaseOutlined style={{ color: token.colorPrimary }} />}
                   style={{ marginBottom: token.marginSM }}
                 />
                 <Statistic
-                  title="已完成文档"
+                  title="完了済みドキュメント"
                   value={stats.completedRepos}
                   prefix={<FileTextOutlined style={{ color: token.colorPrimary }} />}
                   style={{ marginBottom: token.marginSM }}
@@ -454,7 +454,7 @@ export default function OrganizationPage({ params }: any) {
                 <Spin />
               ) : repositories.length > 0 ? (
                 <Card
-                  title="最近更新"
+                  title="最終更新"
                   size="small"
                 >
                   <List
@@ -508,12 +508,12 @@ export default function OrganizationPage({ params }: any) {
           </Row>
         </Card>
 
-        {/* 仓库列表 */}
+        {/* リポジトリ一覧 */}
         <div style={{ marginBottom: token.marginMD }}>
           <Space style={{ width: '100%', justifyContent: 'space-between', marginBottom: token.marginMD }}>
-            <Title level={3} style={{ margin: 0 }}>仓库列表</Title>
+            <Title level={3} style={{ margin: 0 }}>リポジトリ一覧</Title>
             <Search
-              placeholder="搜索仓库名称或地址"
+              placeholder="リポジトリ名またはURLで検索"
               allowClear
               onSearch={value => setSearchValue(value)}
               onChange={e => setSearchValue(e.target.value)}
@@ -532,7 +532,9 @@ export default function OrganizationPage({ params }: any) {
             <Card style={{ background: token.colorBgContainer, borderRadius: token.borderRadiusLG }}>
               <Empty
                 description={
-                  searchValue ? `没有找到与"${searchValue}"相关的仓库` : `${owner} 组织下暂无仓库数据`
+                  searchValue
+                    ? `"${searchValue}" に一致するリポジトリは見つかりませんでした`
+                    : `${owner} に関連するリポジトリは現在ありません`
                 }
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
               />
