@@ -19,10 +19,10 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = ({
 }) => {
   const [activeAnchor, setActiveAnchor] = useState<string>('');
 
-  // 监听滚动事件，自动更新活动锚点
+  // スクロールイベントを監視し、アクティブなアンカーを自動更新
   useEffect(() => {
     const handleScroll = () => {
-      // 查找当前可见的章节
+      // 現在表示されているセクションを検索
       anchorItems.forEach(item => {
         if (item.href) {
           const element = document.querySelector(item.href);
@@ -34,7 +34,7 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = ({
           }
         }
 
-        // 检查子项
+        // 子アイテムをチェック
         if (item.children) {
           item.children.forEach(child => {
             if (child.href) {
@@ -52,11 +52,11 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = ({
     };
 
     window.addEventListener('scroll', handleScroll);
-    // 初始检查当前 hash
+    // 初期に現在のハッシュをチェック
     if (window.location.hash) {
       setActiveAnchor(window.location.hash);
     }
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, [anchorItems]);
   return (
@@ -65,26 +65,26 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = ({
         {anchorItems && anchorItems.length > 0 ? (
           <ul className="sidebar-list">
             {anchorItems.map((item) => (
-              <li 
-                key={item.key} 
+              <li
+                key={item.key}
                 className={`sidebar-item ${activeAnchor === item.href ? 'active' : ''}`}
               >
-                <a 
+                <a
                   href={item.href}
                   className="sidebar-link"
                 >
                   <span className="dot-indicator"></span>
                   {item.title}
                 </a>
-                
+
                 {item.children && item.children.length > 0 && (
                   <ul className="sidebar-sublist">
                     {item.children.map((child) => (
-                      <li 
-                        key={child.key} 
+                      <li
+                        key={child.key}
                         className={`sidebar-subitem ${activeAnchor === child.href ? 'active' : ''}`}
                       >
-                        <a 
+                        <a
                           href={child.href}
                           className="sidebar-sublink"
                         >
@@ -99,11 +99,11 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = ({
             ))}
           </ul>
         ) : (
-          <div className="sidebar-empty">暂无目录</div>
+          <div className="sidebar-empty">目次がありません</div>
         )}
       </nav>
     </div>
   );
 };
 
-export default DocumentSidebar; 
+export default DocumentSidebar;

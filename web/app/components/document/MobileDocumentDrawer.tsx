@@ -15,46 +15,46 @@ const MobileDocumentDrawer: React.FC<MobileDocumentDrawerProps> = ({
 }) => {
   const [expandAll, setExpandAll] = useState<boolean>(false);
   const [activeAnchor, setActiveAnchor] = useState<string>('');
-  
+
   const toggleDrawer = () => {
     const drawerContent = document.querySelector('.mobile-toc-drawer');
     if (drawerContent) {
       drawerContent.classList.toggle('visible');
     }
   };
-  
-  // 复制当前页面链接
+
+  // 現在のページリンクをコピー
   const copyPageLink = () => {
     navigator.clipboard.writeText(window.location.href)
       .then(() => {
-        // 可以添加一个轻量级的通知
-        console.log('链接已复制到剪贴板');
+        // 軽量通知を追加できます
+        console.log('リンクをクリップボードにコピーしました');
       })
       .catch(err => {
-        console.error('复制失败:', err);
+        console.error('コピーに失敗しました:', err);
       });
   };
 
   return (
     <>
-      {/* 移动设备下的悬浮目录按钮 */}
-      <div className="mobile-toc-button" style={{ 
-        display: { xs: 'block', sm: 'block', md: 'none' }[token.screenSM], 
+      {/* モバイルデバイス向けの浮動目次ボタン */}
+      <div className="mobile-toc-button" style={{
+        display: { xs: 'block', sm: 'block', md: 'none' }[token.screenSM],
         position: 'fixed',
         right: 16,
         bottom: 16,
         zIndex: 1000
       }}>
-        <Button 
-          type="primary" 
-          shape="circle" 
+        <Button
+          type="primary"
+          shape="circle"
           size="large"
-          icon={<BookOutlined />} 
+          icon={<BookOutlined />}
           onClick={toggleDrawer}
         />
       </div>
 
-      {/* 移动设备的目录抽屉 */}
+      {/* モバイルデバイスの目次ドロワー */}
       <div className="mobile-toc-drawer" style={{
         display: { xs: 'block', sm: 'block', md: 'none' }[token.screenSM],
         position: 'fixed',
@@ -75,8 +75,8 @@ const MobileDocumentDrawer: React.FC<MobileDocumentDrawerProps> = ({
         overflowY: 'auto',
         padding: 0
       }}>
-        {/* 抽屉标题栏 */}
-        <div style={{ 
+        {/* ドロワー ヘッダー */}
+        <div style={{
           padding: `${token.paddingSM}px ${token.paddingMD}px`,
           borderBottom: `1px solid ${token.colorBorderSecondary}`,
           display: 'flex',
@@ -84,40 +84,40 @@ const MobileDocumentDrawer: React.FC<MobileDocumentDrawerProps> = ({
           alignItems: 'center'
         }}>
           <Title level={5} style={{ margin: 0 }}>
-            <BookOutlined style={{ marginRight: 8 }} /> 文档目录
+            <BookOutlined style={{ marginRight: 8 }} /> ドキュメント目次
           </Title>
           <Space>
-            <Tooltip title={expandAll ? "收起所有" : "展开所有"}>
-              <Button 
-                type="text" 
-                size="small" 
+            <Tooltip title={expandAll ? "すべて折りたたむ" : "すべて展開"}>
+              <Button
+                type="text"
+                size="small"
                 icon={<ExpandOutlined />}
                 onClick={() => setExpandAll(!expandAll)}
               />
             </Tooltip>
-            <Tooltip title="分享链接">
-              <Button 
-                type="text" 
-                size="small" 
-                icon={<ShareAltOutlined />} 
+            <Tooltip title="リンクを共有">
+              <Button
+                type="text"
+                size="small"
+                icon={<ShareAltOutlined />}
                 onClick={copyPageLink}
               />
             </Tooltip>
-            <Tooltip title="关闭">
-              <Button 
-                type="text" 
-                size="small" 
-                icon={<CloseOutlined />} 
+            <Tooltip title="閉じる">
+              <Button
+                type="text"
+                size="small"
+                icon={<CloseOutlined />}
                 onClick={toggleDrawer}
               />
             </Tooltip>
           </Space>
         </div>
-        
-        {/* 目录内容区 */}
-        <div 
+
+        {/* 目次コンテンツ */}
+        <div
           className={`doc-toc-content ${expandAll ? 'expanded' : ''}`}
-          style={{ 
+          style={{
             padding: `${token.paddingMD}px 0`,
             maxHeight: 'calc(100% - 50px)',
             overflowY: 'auto'
@@ -134,13 +134,13 @@ const MobileDocumentDrawer: React.FC<MobileDocumentDrawerProps> = ({
                 if (link?.href) {
                   const targetElement = document.querySelector(link.href);
                   if (targetElement) {
-                    targetElement.scrollIntoView({ 
+                    targetElement.scrollIntoView({
                       behavior: 'smooth',
                       block: 'start'
                     });
                     setActiveAnchor(link.href);
-                    
-                    // 点击后关闭抽屉
+
+                    // クリック後にドロワーを閉じる
                     toggleDrawer();
                   }
                 }
@@ -149,7 +149,7 @@ const MobileDocumentDrawer: React.FC<MobileDocumentDrawerProps> = ({
             />
           ) : (
             <div style={{ textAlign: 'center', color: token.colorTextSecondary, padding: token.paddingLG }}>
-              暂无目录
+              目次がありません
             </div>
           )}
         </div>
@@ -158,4 +158,4 @@ const MobileDocumentDrawer: React.FC<MobileDocumentDrawerProps> = ({
   );
 };
 
-export default MobileDocumentDrawer; 
+export default MobileDocumentDrawer;
