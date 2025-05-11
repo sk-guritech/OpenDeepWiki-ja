@@ -8,16 +8,15 @@ using OpenAI;
 using Serilog;
 
 #pragma warning disable SKEXP0070
-
 #pragma warning disable SKEXP0010
 
 namespace KoalaWiki;
 
 /// <summary>
-/// 提供一个静态方法来创建和配置一个内核实例，用于各种基于ai的操作。
-/// KernelFactory类负责设置必要的服务、插件和配置
-/// 内核需要的，包括聊天完成服务，日志记录和文件处理功能。
-/// 它支持多个AI模型提供者，并允许可选的代码分析功能。
+/// AIベースの操作を行うためのカーネルインスタンスを作成および構成する静的メソッドを提供します。  
+/// KernelFactoryクラスは、チャット完了サービス、ログ記録、ファイル処理機能など、  
+/// カーネルに必要なサービス、プラグイン、および設定を設定します。  
+/// 複数のAIモデルプロバイダーに対応し、オプションでコード分析機能を提供します。  
 /// </summary>
 public static class KernelFactory
 {
@@ -31,19 +30,19 @@ public static class KernelFactory
         kernelBuilder.Services.AddSerilog(Log.Logger);
 
         kernelBuilder.Services.AddSingleton<IPromptRenderFilter, LanguagePromptFilter>();
-        
+
         if (OpenAIOptions.ModelProvider.Equals("OpenAI", StringComparison.OrdinalIgnoreCase))
         {
             kernelBuilder.AddOpenAIChatCompletion(model, new Uri(chatEndpoint), apiKey,
                 httpClient: new HttpClient(new KoalaHttpClientHandler()
                 {
-                    //添加重试试
+                    // リトライを追加
                     AllowAutoRedirect = true,
                     MaxAutomaticRedirections = 5,
                     MaxConnectionsPerServer = 200,
                 })
                 {
-                    // 添加重试
+                    // リトライを追加
                     Timeout = TimeSpan.FromSeconds(16000),
                 });
         }
@@ -52,13 +51,13 @@ public static class KernelFactory
             kernelBuilder.AddAzureOpenAIChatCompletion(model, chatEndpoint, apiKey, httpClient: new HttpClient(
                 new KoalaHttpClientHandler()
                 {
-                    //添加重试试
+                    // リトライを追加
                     AllowAutoRedirect = true,
                     MaxAutomaticRedirections = 5,
                     MaxConnectionsPerServer = 200,
                 })
             {
-                // 添加重试
+                // リトライを追加
                 Timeout = TimeSpan.FromSeconds(16000),
             });
         }
@@ -67,19 +66,19 @@ public static class KernelFactory
             kernelBuilder.AddAnthropicChatCompletion(model, apiKey, httpClient: new HttpClient(
                 new KoalaHttpClientHandler()
                 {
-                    //添加重试试
+                    // リトライを追加
                     AllowAutoRedirect = true,
                     MaxAutomaticRedirections = 5,
                     MaxConnectionsPerServer = 200,
                 })
             {
-                // 添加重试
+                // リトライを追加
                 Timeout = TimeSpan.FromSeconds(16000),
             });
         }
         else
         {
-            throw new Exception("暂不支持：" + OpenAIOptions.ModelProvider + "，请使用OpenAI、AzureOpenAI或Anthropic");
+            throw new Exception("現在は " + OpenAIOptions.ModelProvider + " はサポートされていません。OpenAI、AzureOpenAI、Anthropic を使用してください。");
         }
 
         if (isCodeAnalysis)
@@ -88,7 +87,7 @@ public static class KernelFactory
                 "CodeAnalysis"));
         }
 
-        // 添加文件函数
+        // ファイル処理機能を追加
         var fileFunction = new FileFunction(gitPath);
         kernelBuilder.Plugins.AddFromObject(fileFunction);
 
