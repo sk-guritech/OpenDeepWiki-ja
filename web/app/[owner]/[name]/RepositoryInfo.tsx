@@ -54,13 +54,13 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
         const response = await fetch(`https://api.github.com/repos/${owner}/${name}`);
 
         if (!response.ok) {
-          throw new Error('GitHub仓库信息获取失败');
+          throw new Error('GitHubリポジトリ情報の取得に失敗しました');
         }
 
         const data = await response.json();
         setRepoInfo(data);
 
-        // 获取README内容
+        // README内容を取得
         try {
           const readmeResponse = await fetch(`https://api.github.com/repos/${owner}/${name}/readme`, {
             headers: {
@@ -69,19 +69,18 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
           });
 
           if (readmeResponse.ok) {
-
             const readmeHtml = await readmeResponse.text();
             setReadme(readmeHtml);
           }
         } catch (readmeErr) {
-          console.error('获取README失败:', readmeErr);
-          // README获取失败不影响主流程
+          console.error('READMEの取得に失敗しました:', readmeErr);
+          // README取得失敗はメインフローに影響しない
         }
 
         setError(null);
       } catch (err) {
-        console.error('获取GitHub仓库信息出错:', err);
-        setError('无法获取GitHub仓库信息');
+        console.error('GitHubリポジトリ情報の取得中にエラーが発生しました:', err);
+        setError('GitHubリポジトリ情報を取得できませんでした');
       } finally {
         setLoading(false);
       }
@@ -101,15 +100,15 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
     try {
       const response = await submitWarehouse(values);
       if (response.success) {
-        message.success('仓库添加成功');
-        // 刷新页面以获取最新数据
+        message.success('リポジトリの追加に成功しました');
+        // 最新データ取得のためリロード
         window.location.reload();
       } else {
-        message.error('添加仓库失败: ' + (response.error || '未知错误'));
+        message.error('リポジトリの追加に失敗しました: ' + (response.error || '不明なエラー'));
       }
     } catch (error) {
-      console.error('添加仓库出错:', error);
-      message.error('添加仓库出错，请稍后重试');
+      console.error('リポジトリ追加中にエラーが発生しました:', error);
+      message.error('リポジトリの追加中にエラーが発生しました。後ほどお試しください');
     }
     setFormVisible(false);
   };
@@ -122,12 +121,12 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
         ) : error ? (
           <div style={{ textAlign: 'center', padding: '40px 0' }}>
             <ExclamationCircleOutlined style={{ fontSize: '48px', color: token.colorError, marginBottom: '16px' }} />
-            <Title level={4} style={{ marginBottom: '16px' }}>仓库未索引</Title>
+            <Title level={4} style={{ marginBottom: '16px' }}>リポジトリがインデックスされていません</Title>
             <Paragraph type="secondary">
-              {`${owner}/${name} ${error}`}
+              {`${owner}/${name} — ${error}`}
             </Paragraph>
             <Button type="primary" href={`https://github.com/${owner}/${name}`} target="_blank">
-              前往GitHub查看
+              GitHubで表示
             </Button>
           </div>
         ) : repoInfo && (
@@ -163,7 +162,7 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
                   style={{ marginRight: '12px', marginBottom: '8px' }}
                   icon={<EyeOutlined />}
                 >
-                  在GitHub上查看
+                  GitHubで表示
                 </Button>
                 <Button
                   type="default"
@@ -171,7 +170,7 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
                   style={{ marginBottom: '8px' }}
                   icon={<PlusOutlined />}
                 >
-                  添加仓库
+                  リポジトリを追加
                 </Button>
               </div>
             </div>
@@ -179,18 +178,18 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
             <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
               <Col>
                 <Tag color={token.colorPrimary} icon={<StarOutlined />}>
-                  {repoInfo.stargazers_count} 星标
+                  {repoInfo.stargazers_count} スター
                 </Tag>
               </Col>
               <Col>
                 <Tag color={token.colorSuccess} icon={<ForkOutlined />}>
-                  {repoInfo.forks_count} 分支
+                  {repoInfo.forks_count} フォーク
                 </Tag>
               </Col>
               {repoInfo.open_issues_count > 0 && (
                 <Col>
                   <Tag color={token.colorWarning} icon={<IssuesCloseOutlined />}>
-                    {repoInfo.open_issues_count} 议题
+                    {repoInfo.open_issues_count} イシュー
                   </Tag>
                 </Col>
               )}
@@ -210,7 +209,7 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
               )}
               <Col>
                 <Tag color={token.colorTextSecondary} icon={<CalendarOutlined />}>
-                  更新于 {formatDate(repoInfo.updated_at)}
+                  最終更新: {formatDate(repoInfo.updated_at)}
                 </Tag>
               </Col>
               {repoInfo.topics && repoInfo.topics.length > 0 && (
@@ -309,4 +308,4 @@ export default function RepositoryInfo({ owner, name }: RepositoryInfoProps) {
       </div>
     </div>
   );
-} 
+}
