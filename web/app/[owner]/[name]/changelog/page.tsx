@@ -30,12 +30,13 @@ export default function ChangelogPage({ params }: { params: Promise<PageParams> 
         setLoading(true);
         const response = await getChangeLog(owner, name);
         console.log(response);
-        
+
         setChangelog(response.data);
         setLoading(false);
       } catch (err) {
-        console.error('获取更新日志失败', err);
-        setError('获取更新日志失败');
+        // 更新ログの取得に失敗しました
+        console.error('更新ログの取得に失敗しました', err);
+        setError('更新ログの取得に失敗しました');
         setLoading(false);
       }
     }
@@ -57,30 +58,30 @@ export default function ChangelogPage({ params }: { params: Promise<PageParams> 
     return (
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description="暂无更新日志"
-        style={{ 
-          marginTop: token.marginXL, 
-          padding: token.paddingLG 
+        description="更新ログがありません"
+        style={{
+          marginTop: token.marginXL,
+          padding: token.paddingLG
         }}
       />
     );
   }
 
   return (
-    <div style={{ 
-      maxWidth: 800, 
-      margin: '0 auto', 
+    <div style={{
+      maxWidth: 800,
+      margin: '0 auto',
       padding: token.paddingLG,
       backgroundColor: token.colorBgContainer,
       borderRadius: token.borderRadiusLG,
       boxShadow: token.boxShadowTertiary
     }}>
       <Title level={2} style={{ marginBottom: token.marginLG, color: token.colorTextHeading }}>
-        更新日志
+        更新ログ
       </Title>
-      
-      <div className="markdown-content" style={{ 
-        color: token.colorText, 
+
+      <div className="markdown-content" style={{
+        color: token.colorText,
         lineHeight: 1.6,
         fontSize: token.fontSize
       }}>
@@ -90,4 +91,4 @@ export default function ChangelogPage({ params }: { params: Promise<PageParams> 
       </div>
     </div>
   );
-} 
+}
