@@ -4,7 +4,7 @@ namespace KoalaWiki.KoalaWarehouse;
 
 public static class Prompt
 {
-    private static string _language = "中文";
+    private static string _language = "日本語";
 
     static Prompt()
     {
