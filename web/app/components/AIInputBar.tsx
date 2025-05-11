@@ -66,7 +66,7 @@ const AIInputBar: React.FC<AIInputBarProps> = ({ owner, name, style }) => {
     };
 
     // 深入推理开关的标签
-    const researchLabel = screens.sm ? '深入推理' : '';
+    const researchLabel = screens.sm ? '深く推論' : '';
 
     // 悬浮球样式
     const floatingBallStyle = {
@@ -107,7 +107,7 @@ const AIInputBar: React.FC<AIInputBarProps> = ({ owner, name, style }) => {
             ...style
         }}>
             {collapsed ? (
-                <Tooltip title="打开AI助手" placement="left">
+                <Tooltip title="AIアシスタントを開く" placement="left">
                     <div
                         style={floatingBallStyle}
                         onClick={toggleCollapse}
@@ -128,7 +128,7 @@ const AIInputBar: React.FC<AIInputBarProps> = ({ owner, name, style }) => {
                             icon={<UpOutlined />}
                             size="small"
                             onClick={toggleCollapse}
-                            title="收起"
+                            title="折りたたむ"
                         />
                     </Flex>
                     <Flex
@@ -147,7 +147,7 @@ const AIInputBar: React.FC<AIInputBarProps> = ({ owner, name, style }) => {
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            placeholder="输入问题..."
+                            placeholder="質問を入力..."
                             autoSize={{ minRows: 1, maxRows: 4 }}
                             disabled={isLoading}
                             style={{

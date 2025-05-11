@@ -32,18 +32,18 @@ const RepositoryForm: React.FC<RepositoryFormProps> = ({
       const values = await form.validateFields();
       setLoading(true);
 
-      // Call the API service
+      // API呼び出し
       const response = await submitWarehouse(values) as any;
 
       if (response.data.code === 200) {
-        message.success('仓库添加成功');
+        message.success('リポジトリの追加に成功しました');
         onSubmit(values);
         form.resetFields();
       } else {
-        message.error(response.data.message || '添加失败，请重试')
+        message.error(response.data.message || '追加に失敗しました。もう一度お試しください');
       }
     } catch (error) {
-      console.error('Form submission failed:', error);
+      console.error('フォームの送信に失敗しました:', error);
     } finally {
       setLoading(false);
     }
@@ -74,31 +74,31 @@ const RepositoryForm: React.FC<RepositoryFormProps> = ({
       title={
         <Space>
           <GithubOutlined style={{ color: token.colorPrimary }} />
-          <Title level={5} style={{ margin: 0 }}>添加仓库</Title>
+          <Title level={5} style={{ margin: 0 }}>リポジトリを追加</Title>
         </Space>
       }
       open={open}
       onCancel={onCancel}
-      
+
       destroyOnClose
       footer={[
         <Button key="cancel" onClick={onCancel} disabled={loading}>
-          取消
+          キャンセル
         </Button>,
-        <Button 
-          key="submit" 
-          type="primary" 
-          onClick={handleSubmit} 
+        <Button
+          key="submit"
+          type="primary"
+          onClick={handleSubmit}
           loading={loading}
           icon={<GithubOutlined />}
         >
-          提交
+          送信
         </Button>,
       ]}
       width={500}
-      bodyStyle={{ 
+      bodyStyle={{
         padding: token.paddingLG,
-        backgroundColor: token.colorBgContainer 
+        backgroundColor: token.colorBgContainer
       }}
     >
       <Form
@@ -115,21 +115,21 @@ const RepositoryForm: React.FC<RepositoryFormProps> = ({
       >
         <Form.Item
           name="address"
-          label="仓库地址"
-          rules={[{ required: true, message: '请输入仓库地址' }]}
+          label="リポジトリURL"
+          rules={[{ required: true, message: 'リポジトリURLを入力してください' }]}
         >
-          <Input 
-            placeholder="https://github.com/username/repository" 
+          <Input
+            placeholder="https://github.com/username/repository"
             prefix={<LinkOutlined style={{ color: token.colorTextSecondary }} />}
             allowClear
             disabled={disabledFields.includes('address')}
           />
         </Form.Item>
-{/*         
+        {/*         
         <Form.Item
           name="branch"
-          label="分支名称"
-          rules={[{ required: true, message: '请输入分支名称' }]}
+          label="ブランチ名"
+          rules={[{ required: true, message: 'ブランチ名を入力してください' }]}
         >
           <Input 
             placeholder="main" 
@@ -139,16 +139,16 @@ const RepositoryForm: React.FC<RepositoryFormProps> = ({
         </Form.Item> */}
 
         <Divider style={{ margin: `${token.marginMD}px 0` }} />
-        
+
         <Form.Item
           name="enableGitAuth"
           label={
             <Space>
               <LockOutlined style={{ color: token.colorWarning }} />
-              <Text>启用私有仓库认证</Text>
+              <Text>プライベートリポジトリ認証を有効にする</Text>
             </Space>
           }
-          tooltip="如果是私有仓库，请启用此选项并填写凭据"
+          tooltip="プライベートリポジトリを使用する場合は、このオプションを有効にして認証情報を入力してください"
           valuePropName="checked"
         >
           <Switch onChange={handleGitAuthChange} />
@@ -158,11 +158,11 @@ const RepositoryForm: React.FC<RepositoryFormProps> = ({
           <Space direction="vertical" style={{ width: '100%' }}>
             <Form.Item
               name="gitUserName"
-              label="Git用户名"
-              rules={[{ required: enableGitAuth, message: '请输入Git用户名' }]}
+              label="Gitユーザー名"
+              rules={[{ required: enableGitAuth, message: 'Gitユーザー名を入力してください' }]}
             >
-              <Input 
-                placeholder="请输入Git用户名" 
+              <Input
+                placeholder="Gitユーザー名を入力"
                 prefix={<UserOutlined style={{ color: token.colorTextSecondary }} />}
                 allowClear
               />
@@ -170,12 +170,12 @@ const RepositoryForm: React.FC<RepositoryFormProps> = ({
 
             <Form.Item
               name="gitPassword"
-              label="Git密码/访问令牌"
-              rules={[{ required: enableGitAuth, message: '请输入Git密码或访问令牌' }]}
-              extra={<Text type="secondary" style={{ fontSize: token.fontSizeSM }}>对于GitHub，推荐使用Personal Access Token</Text>}
+              label="Gitパスワード / アクセストークン"
+              rules={[{ required: enableGitAuth, message: 'Gitパスワードまたはトークンを入力してください' }]}
+              extra={<Text type="secondary" style={{ fontSize: token.fontSizeSM }}>GitHubの場合、Personal Access Tokenの使用を推奨します</Text>}
             >
-              <Input.Password 
-                placeholder="请输入Git密码或访问令牌" 
+              <Input.Password
+                placeholder="Gitパスワードまたはトークンを入力"
                 prefix={<LockOutlined style={{ color: token.colorTextSecondary }} />}
               />
             </Form.Item>

@@ -27,7 +27,7 @@ const DocDirectoryTree: React.FC<DirectoryTreeProps> = ({
     const selectedNode = info.node;
     if (!selectedNode.children) {
       const path = selectedNode.key;
-      
+
       // 根据提供的参数决定使用哪种路由格式
       if (owner && name) {
         router.push(`/${owner}/${name}/doc/${path}`);
@@ -41,14 +41,14 @@ const DocDirectoryTree: React.FC<DirectoryTreeProps> = ({
   const processTreeData = (data: DataNode[]): DataNode[] => {
     return data.map(node => {
       const newNode = { ...node };
-      
+
       if (newNode.children) {
         newNode.icon = <FolderOutlined />;
         newNode.children = processTreeData(newNode.children);
       } else {
         newNode.icon = <FileOutlined />;
       }
-      
+
       return newNode;
     });
   };
@@ -61,7 +61,7 @@ const DocDirectoryTree: React.FC<DirectoryTreeProps> = ({
       title={
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <FolderOutlined style={{ marginRight: 8, color: 'var(--ant-color-primary)' }} />
-          <Title level={5} style={{ margin: 0 }}>文档目录</Title>
+          <Title level={5} style={{ margin: 0 }}>ドキュメントディレクトリ</Title>
         </div>
       }
     >

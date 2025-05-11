@@ -1,27 +1,27 @@
 import { useState, useEffect } from 'react';
-import { 
-  Modal, 
-  Form, 
-  Input, 
-  Button, 
-  message, 
-  Spin, 
-  Typography, 
-  Descriptions, 
-  Tag, 
-  Space, 
-  Result, 
-  Row, 
-  Col, 
+import {
+  Modal,
+  Form,
+  Input,
+  Button,
+  message,
+  Spin,
+  Typography,
+  Descriptions,
+  Tag,
+  Space,
+  Result,
+  Row,
+  Col,
   theme,
   Divider,
   Card
 } from 'antd';
-import { 
-  SearchOutlined, 
-  GithubOutlined, 
-  BranchesOutlined, 
-  ClockCircleOutlined, 
+import {
+  SearchOutlined,
+  GithubOutlined,
+  BranchesOutlined,
+  ClockCircleOutlined,
   InfoCircleOutlined,
   ExclamationCircleOutlined,
   SyncOutlined,
@@ -63,19 +63,19 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
       const values = await form.validateFields();
       setLoading(true);
       setSearched(false);
-      
+
       try {
         const response = await getLastWarehouse(values.address);
         if (response.success && response.data) {
           setRepository(response.data);
           setSearched(true);
         } else {
-          message.error('查询失败: ' + (response.error || '未找到相关仓库'));
+          message.error('検索に失敗しました: ' + (response.error || '該当するリポジトリが見つかりませんでした'));
           setRepository(null);
         }
       } catch (error) {
-        console.error('查询仓库出错:', error);
-        message.error('查询仓库出错，请稍后重试');
+        console.error('リポジトリ検索エラー:', error);
+        message.error('リポジトリの検索中にエラーが発生しました。後でもう一度お試しください。');
         setRepository(null);
       } finally {
         setLoading(false);
@@ -95,14 +95,14 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
   // 获取仓库状态文本
   const getStatusText = (status: number) => {
     const statusMap: Record<number, { text: string; color: string; icon: React.ReactNode }> = {
-      0: { text: '待处理', color: 'warning', icon: <ClockCircleOutlined /> },
-      1: { text: '处理中', color: 'processing', icon: <SyncOutlined spin /> },
-      2: { text: '已完成', color: 'success', icon: <CheckCircleOutlined /> },
-      3: { text: '已取消', color: 'default', icon: <StopOutlined /> },
-      4: { text: '未授权', color: 'purple', icon: <LockOutlined /> },
-      99: { text: '已失败', color: 'error', icon: <ExclamationCircleOutlined /> },
+      0: { text: '保留中', color: 'warning', icon: <ClockCircleOutlined /> },
+      1: { text: '処理中', color: 'processing', icon: <SyncOutlined spin /> },
+      2: { text: '完了', color: 'success', icon: <CheckCircleOutlined /> },
+      3: { text: 'キャンセル済み', color: 'default', icon: <StopOutlined /> },
+      4: { text: '未認可', color: 'purple', icon: <LockOutlined /> },
+      99: { text: '失敗', color: 'error', icon: <ExclamationCircleOutlined /> },
     };
-    return statusMap[status] || { text: '未知状态', color: 'default', icon: <QuestionCircleOutlined /> };
+    return statusMap[status] || { text: '不明な状態', color: 'default', icon: <QuestionCircleOutlined /> };
   };
 
   // 渲染内容区域
@@ -112,7 +112,7 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
         <div style={{ padding: token.paddingLG, textAlign: 'center' }}>
           <Spin size="large" />
           <Text type="secondary" style={{ display: 'block', marginTop: token.marginMD, fontSize: token.fontSizeLG }}>
-            正在查询仓库信息...
+            リポジトリ情報を検索中...
           </Text>
         </div>
       );
@@ -122,8 +122,8 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
       return (
         <Result
           status="warning"
-          title={<span style={{ fontSize: token.fontSizeLG }}>未找到仓库信息</span>}
-          subTitle={<span style={{ fontSize: token.fontSize }}>请检查输入的仓库地址是否正确</span>}
+          title={<span style={{ fontSize: token.fontSizeLG }}>リポジトリが見つかりません</span>}
+          subTitle={<span style={{ fontSize: token.fontSize }}>入力したURLが正しいか確認してください</span>}
           icon={<ExclamationCircleOutlined style={{ color: token.colorWarning, fontSize: 64 }} />}
           style={{ padding: token.paddingLG }}
         />
@@ -132,60 +132,60 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
 
     if (searched && repository) {
       const statusInfo = getStatusText(repository.status);
-      
+
       return (
-        <Card 
+        <Card
           bordered={false}
-          style={{ 
+          style={{
             marginTop: token.marginLG,
             boxShadow: token.boxShadowTertiary,
             borderRadius: token.borderRadiusLG
           }}
           bodyStyle={{ padding: 0 }}
         >
-          <div style={{ 
+          <div style={{
             padding: `${token.paddingMD}px ${token.paddingLG}px`,
             borderBottom: `1px solid ${token.colorBorderSecondary}`,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <Title level={5} style={{ margin: 0, color: token.colorTextHeading }}>查询结果</Title>
-            <Tag 
-              color={statusInfo.color} 
-              icon={statusInfo.icon} 
-              style={{ 
-                padding: `${token.paddingXS}px ${token.paddingSM}px`, 
-                fontSize: token.fontSize 
+            <Title level={5} style={{ margin: 0, color: token.colorTextHeading }}>検索結果</Title>
+            <Tag
+              color={statusInfo.color}
+              icon={statusInfo.icon}
+              style={{
+                padding: `${token.paddingXS}px ${token.paddingSM}px`,
+                fontSize: token.fontSize
               }}
             >
               {statusInfo.text}
             </Tag>
           </div>
-          
+
           <Descriptions
             bordered
             size="middle"
             column={1}
-            labelStyle={{ 
+            labelStyle={{
               backgroundColor: token.colorBgLayout,
               padding: `${token.paddingSM}px ${token.paddingMD}px`,
               width: '25%',
               fontSize: token.fontSize
             }}
-            contentStyle={{ 
+            contentStyle={{
               padding: `${token.paddingSM}px ${token.paddingMD}px`,
-              fontSize: token.fontSize 
+              fontSize: token.fontSize
             }}
           >
-            <Descriptions.Item label="仓库名称">
+            <Descriptions.Item label="リポジトリ名">
               <Text strong>{repository.name}</Text>
             </Descriptions.Item>
-            
-            <Descriptions.Item label="仓库地址">
+
+            <Descriptions.Item label="リポジトリURL">
               <Text
-                ellipsis={{ 
-                  tooltip: repository.address 
+                ellipsis={{
+                  tooltip: repository.address
                 }}
                 style={{ maxWidth: '100%', display: 'inline-block' }}
                 copyable
@@ -193,18 +193,18 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
                 {repository.address}
               </Text>
             </Descriptions.Item>
-            
-            <Descriptions.Item label="仓库信息">
+
+            <Descriptions.Item label="リポジトリ情報">
               <Space size={token.marginSM}>
-                <Tag 
-                  icon={<GithubOutlined />} 
-                  color="blue" 
+                <Tag
+                  icon={<GithubOutlined />}
+                  color="blue"
                   style={{ padding: `2px ${token.paddingSM}px`, fontSize: token.fontSize }}
                 >
                   {repository.type}
                 </Tag>
-                <Tag 
-                  icon={<BranchesOutlined />} 
+                <Tag
+                  icon={<BranchesOutlined />}
                   color="cyan"
                   style={{ padding: `2px ${token.paddingSM}px`, fontSize: token.fontSize }}
                 >
@@ -212,10 +212,10 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
                 </Tag>
               </Space>
             </Descriptions.Item>
-            
+
             {repository.error && (
-              <Descriptions.Item 
-                label={<Text type="danger" strong>错误信息</Text>}
+              <Descriptions.Item
+                label={<Text type="danger" strong>エラーメッセージ</Text>}
                 contentStyle={{ backgroundColor: token.colorErrorBg }}
               >
                 <Text type="danger" style={{ fontSize: token.fontSize }}>{repository.error}</Text>
@@ -231,7 +231,7 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
 
   return (
     <Modal
-      title={<Title level={4} style={{ margin: 0 }}>查询仓库</Title>}
+      title={<Title level={4} style={{ margin: 0 }}>リポジトリ検索</Title>}
       open={open}
       onCancel={handleCancel}
       footer={null}
@@ -241,44 +241,44 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
       bodyStyle={{ padding: token.paddingLG }}
       style={{ top: 20 }}
     >
-      <Form 
-        form={form} 
+      <Form
+        form={form}
         layout="vertical"
         size="large"
         style={{ marginBottom: token.marginMD }}
       >
         <Form.Item
           name="address"
-          label={<Text strong style={{ fontSize: token.fontSizeLG }}>仓库地址</Text>}
-          rules={[{ required: true, message: '请输入仓库地址' }]}
-          tooltip={{ title: '输入您的Git仓库完整URL', icon: <InfoCircleOutlined /> }}
+          label={<Text strong style={{ fontSize: token.fontSizeLG }}>リポジトリURL</Text>}
+          rules={[{ required: true, message: 'リポジトリURLを入力してください' }]}
+          tooltip={{ title: 'Gitリポジトリの完全なURLを入力してください', icon: <InfoCircleOutlined /> }}
           style={{ marginBottom: token.marginSM }}
         >
           <Input
-            placeholder="请输入Git仓库地址"
+            placeholder="GitリポジトリのURLを入力"
             prefix={
-              <LinkOutlined 
-                style={{ 
-                  color: token.colorTextSecondary, 
+              <LinkOutlined
+                style={{
+                  color: token.colorTextSecondary,
                   fontSize: token.fontSizeLG,
-                  marginRight: token.marginXS 
-                }} 
+                  marginRight: token.marginXS
+                }}
               />
             }
             suffix={
-              <Button 
-                type="primary" 
-                icon={<SearchOutlined />} 
+              <Button
+                type="primary"
+                icon={<SearchOutlined />}
                 onClick={handleSearch}
                 loading={loading}
-                style={{ 
+                style={{
                   marginRight: -7,
                   height: 40,
                   fontSize: token.fontSize,
                   paddingInline: token.paddingMD
                 }}
               >
-                查询
+                検索
               </Button>
             }
             onPressEnter={handleSearch}
@@ -289,7 +289,7 @@ const LastRepoModal: React.FC<LastRepoModalProps> = ({ open, onCancel }) => {
           />
         </Form.Item>
         <Text type="secondary" style={{ fontSize: token.fontSize, marginLeft: token.marginSM }}>
-          例如: {homepage}
+          例: {homepage}
         </Text>
       </Form>
 

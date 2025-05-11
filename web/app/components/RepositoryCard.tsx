@@ -77,13 +77,13 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
   // 获取状态文本
   const getStatusText = (status: number) => {
     switch (status) {
-      case 0: return '待处理';
-      case 1: return '处理中';
-      case 2: return '已完成';
-      case 3: return '已取消';
-      case 4: return '未授权';
-      case 99: return '已失败';
-      default: return '未知状态';
+      case 0: return '保留中';
+      case 1: return '処理中';
+      case 2: return '完了';
+      case 3: return 'キャンセル済み';
+      case 4: return '未認可';
+      case 99: return '失敗';
+      default: return '不明';
     }
   };
 

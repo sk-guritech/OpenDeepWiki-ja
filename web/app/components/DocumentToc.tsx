@@ -19,7 +19,7 @@ const DocumentToc: React.FC<DocumentTocProps> = ({ toc }) => {
       title={
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <UnorderedListOutlined style={{ marginRight: 8, color: 'var(--ant-color-primary)' }} />
-          <Title level={5} style={{ margin: 0 }}>文档目录</Title>
+          <Title level={5} style={{ margin: 0 }}>ドキュメントディレクトリ</Title>
         </div>
       }
     >

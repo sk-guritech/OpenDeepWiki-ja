@@ -8,7 +8,7 @@ interface RepositoryListProps {
 
 const RepositoryList: React.FC<RepositoryListProps> = ({ repositories }) => {
   if (!repositories.length) {
-    return <Empty description="暂无仓库数据" />;
+    return <Empty description="リポジトリデータがありません" />;
   }
 
   return (
@@ -24,4 +24,4 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ repositories }) => {
   );
 };
 
-export default RepositoryList; 
+export default RepositoryList;
