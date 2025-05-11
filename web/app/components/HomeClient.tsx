@@ -19,7 +19,7 @@ const { Content, Header, Footer } = Layout;
 const { Title, Paragraph, Text } = Typography;
 const { Search } = Input;
 
-// 自定义主题配置
+// カスタムテーマ設定
 const customTheme = {
   token: {
     colorPrimary: '#3f51b5',
@@ -104,21 +104,21 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
         message.config({
           duration: 1.5,
         });
-        message.success('仓库添加成功');
-        // 刷新页面以获取最新数据
+        message.success('リポジトリが追加されました');
+        // 最新データを取得するためにページをリロード
         window.location.reload();
       } else {
         message.config({
           duration: 1.5,
         });
-        message.error('添加仓库失败: ' + (response.error || '未知错误'));
+        message.error('リポジトリの追加に失敗しました: ' + (response.error || '不明なエラー'));
       }
     } catch (error) {
-      console.error('添加仓库出错:', error);
+      console.error('リポジトリ追加エラー:', error);
       message.config({
         duration: 1.5,
       });
-      message.error('添加仓库出错，请稍后重试');
+      message.error('リポジトリの追加中にエラーが発生しました。後でもう一度お試しください');
     }
     setFormVisible(false);
   };
@@ -140,13 +140,13 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
     window.location.href = `/?page=${1}&pageSize=${initialPageSize}&keyword=${value}`;
   };
 
-  // 计算统计数据
+  // 統計データの計算
   const stats = {
     totalRepositories: initialTotal || repositories.length,
     gitRepos: repositories.filter(repo => repo.type === 'git').length,
     lastUpdated: repositories.length ? new Date(
       Math.max(...repositories.map(repo => new Date(repo.createdAt).getTime()))
-    ).toLocaleDateString('zh-CN') : '-'
+    ).toLocaleDateString('ja-JP') : '-'
   };
 
   const contentStyle = {
@@ -251,7 +251,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                 marginLeft: 10,
                 opacity: 0.8
               }}>
-                开源的DeepWiki，让您眼前一亮！
+                オープンソースの DeepWiki、目を見張る体験を！
               </span>
             </div>
 
@@ -313,7 +313,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                   />
                 </span>
               </div>
-              <Tooltip title="源码地址" placement="bottom">
+              <Tooltip title="ソースコード" placement="bottom">
                 <Button
                   type="text"
                   icon={<GithubOutlined style={{ fontSize: 18 }} />}
@@ -345,10 +345,10 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                     <Col xs={24} md={16}>
                       <div style={{ paddingRight: 24 }}>
                         <Title level={2} style={welcomeTitleStyle}>
-                          AI驱动的代码知识库
+                          AI駆動のコードナレッジベース
                         </Title>
                         <Paragraph style={paragraphStyle}>
-                          OpenDeepWiki 是参考DeepWiki作为灵感，基于 .NET 9 和 Semantic Kernel 开发的开源项目。它旨在帮助开发者更好地理解和使用代码库，提供代码分析、文档生成等功能。
+                          OpenDeepWiki は DeepWiki からインスピレーションを受け、.NET 9 と Semantic Kernel を基盤に開発されたオープンソースプロジェクトです。開発者がコードベースをより深く理解し、活用するために、コード解析やドキュメント生成などの機能を提供します。
                         </Paragraph>
                         <Space size={16}>
                           <Button
@@ -358,7 +358,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                             onClick={() => setFormVisible(true)}
                             style={primaryButtonStyle}
                           >
-                            添加新仓库
+                            新しいリポジトリを追加
                           </Button>
                           <Button
                             type="default"
@@ -366,7 +366,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                             onClick={handleLastRepoQuery}
                             style={buttonStyle}
                           >
-                            查询上次提交仓库
+                            前回追加したリポジトリを表示
                           </Button>
                         </Space>
                       </div>
@@ -376,7 +376,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                         <Col span={12}>
                           <div style={statisticStyle}>
                             <Statistic
-                              title={<Typography.Text style={{ color: customTheme.token.colorTextSecondary }}>仓库总数</Typography.Text>}
+                              title={<Typography.Text style={{ color: customTheme.token.colorTextSecondary }}>リポジトリ総数</Typography.Text>}
                               value={stats.totalRepositories}
                               valueStyle={{ color: customTheme.token.colorText, fontWeight: 600 }}
                               prefix={<DatabaseOutlined style={{ color: customTheme.token.colorPrimary }} />}
@@ -386,7 +386,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                         <Col span={12}>
                           <div style={statisticStyle}>
                             <Statistic
-                              title={<Typography.Text style={{ color: customTheme.token.colorTextSecondary }}>Git仓库</Typography.Text>}
+                              title={<Typography.Text style={{ color: customTheme.token.colorTextSecondary }}>Git リポジトリ</Typography.Text>}
                               value={stats.gitRepos}
                               valueStyle={{ color: customTheme.token.colorText, fontWeight: 600 }}
                               prefix={<GithubOutlined style={{ color: customTheme.token.colorPrimary }} />}
@@ -401,10 +401,10 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
             </Row>
 
             <div style={pageHeaderStyle}>
-              <Title level={3} style={{ margin: 0, fontSize: customTheme.token.fontSizeHeading3 }}>仓库列表</Title>
+              <Title level={3} style={{ margin: 0, fontSize: customTheme.token.fontSizeHeading3 }}>リポジトリ一覧</Title>
               <Space wrap>
                 <Search
-                  placeholder="搜索仓库名称或地址"
+                  placeholder="リポジトリ名または URL を検索"
                   allowClear
                   value={searchValue}
                   onSearch={value => handleSearch(value)}
@@ -417,7 +417,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                   onClick={() => setFormVisible(true)}
                   style={primaryButtonStyle}
                 >
-                  添加仓库
+                  リポジトリを追加
                 </Button>
               </Space>
             </div>
@@ -428,12 +428,12 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
                   description={
                     <Typography.Text style={{ color: customTheme.token.colorTextSecondary, fontSize: 15 }}>
-                      {searchValue ? `没有找到与"${searchValue}"相关的仓库` : "暂无仓库数据"}
+                      {searchValue ? `"${searchValue}" に一致するリポジトリは見つかりませんでした` : 'リポジトリはまだありません'}
                     </Typography.Text>
                   }
                 >
                   <Button type="primary" style={primaryButtonStyle} onClick={() => setFormVisible(true)}>
-                    立即添加
+                    追加する
                   </Button>
                 </Empty>
               </Card>
@@ -449,7 +449,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
                       onChange={handlePageChange}
                       showSizeChanger
                       showQuickJumper
-                      showTotal={(total) => `共 ${total} 个仓库`}
+                      showTotal={(total) => `全 ${total} 件`}
                     />
                   </div>
                 )}
@@ -468,7 +468,7 @@ export default function HomeClient({ initialRepositories, initialTotal, initialP
             />
           </div>
         </Content>
-        
+
         <Footer style={{
           textAlign: 'center',
           background: customTheme.token.colorBgContainer,
