@@ -29,23 +29,23 @@ interface GitHubRepoInfo {
   };
 }
 
-// 仓库信息展示组件
+// リポジトリ情報表示コンポーネント
 const RepositoryInfoState = ({ owner, name, token }) => {
   const [repoInfo, setRepoInfo] = useState<GitHubRepoInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchRepoInfo = async () => {
       try {
-        // 尝试直接从GitHub API获取仓库信息
+        // GitHub APIから直接リポジトリ情報を取得
         const response = await fetch(`https://api.github.com/repos/${owner}/${name}`);
-        
+
         if (response.ok) {
           const data = await response.json();
           setRepoInfo({
             name: data.name,
-            description: data.description || '暂无描述',
+            description: data.description || '説明なし',
             stars: data.stargazers_count,
             forks: data.forks_count,
             language: data.language,
@@ -58,12 +58,12 @@ const RepositoryInfoState = ({ owner, name, token }) => {
             }
           });
         } else {
-          // 如果GitHub API获取失败，尝试从自己的API获取
+          // GitHub API取得失敗時は自前のAPIから取得を試みる
           const result = await getLastWarehouse(`https://github.com/${owner}/${name}`);
           if (result.data) {
             setRepoInfo({
               name: result.data.name,
-              description: result.data.description || '暂无描述',
+              description: result.data.description || '説明なし',
               stars: 0,
               forks: 0,
               language: '',
@@ -76,11 +76,11 @@ const RepositoryInfoState = ({ owner, name, token }) => {
               }
             });
           } else {
-            setError('无法获取仓库信息');
+            setError('リポジトリ情報を取得できませんでした');
           }
         }
       } catch (err) {
-        setError('获取仓库信息时出错');
+        setError('リポジトリ情報の取得中にエラーが発生しました');
       } finally {
         setLoading(false);
       }
@@ -96,20 +96,20 @@ const RepositoryInfoState = ({ owner, name, token }) => {
   if (error || !repoInfo) {
     return (
       <Space direction="vertical" size="middle" style={{ width: '100%', textAlign: 'center' }}>
-        <Text type="secondary" style={{ fontSize: 16 }}>仓库地址: https://github.com/{owner}/{name}</Text>
-        <Button 
-          type="primary" 
+        <Text type="secondary" style={{ fontSize: 16 }}>リポジトリアドレス: https://github.com/{owner}/{name}</Text>
+        <Button
+          type="primary"
           icon={<GithubOutlined />}
           href={`https://github.com/${owner}/${name}`}
           target="_blank"
         >
-          访问GitHub仓库
+          GitHubリポジトリにアクセス
         </Button>
-        <Button 
+        <Button
           onClick={() => window.location.reload()}
           icon={<ReloadOutlined />}
         >
-          重新加载
+          再読み込み
         </Button>
       </Space>
     );
@@ -118,16 +118,16 @@ const RepositoryInfoState = ({ owner, name, token }) => {
   return (
     <Space direction="vertical" size="large" style={{ width: '100%' }}>
       <Space size="middle" align="start">
-        <Avatar 
-          size={64} 
+        <Avatar
+          size={64}
           src={repoInfo.owner.avatar_url || undefined}
           icon={!repoInfo.owner.avatar_url && <GithubOutlined />}
         />
         <Space direction="vertical" size="small" style={{ maxWidth: '100%' }}>
           <Title level={3} style={{ margin: 0, color: token.colorTextHeading }}>
-            <a 
-              href={repoInfo.html_url} 
-              target="_blank" 
+            <a
+              href={repoInfo.html_url}
+              target="_blank"
               rel="noopener noreferrer"
               style={{ color: token.colorPrimary }}
             >
@@ -158,21 +158,21 @@ const RepositoryInfoState = ({ owner, name, token }) => {
           </Space>
         </Space>
       </Space>
-      
+
       <Space>
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           icon={<GithubOutlined />}
           href={repoInfo.html_url}
           target="_blank"
         >
-          访问GitHub仓库
+          GitHubリポジトリにアクセス
         </Button>
-        <Button 
+        <Button
           onClick={() => window.location.reload()}
           icon={<ReloadOutlined />}
         >
-          重新加载
+          再読み込み
         </Button>
       </Space>
     </Space>
@@ -186,10 +186,10 @@ const LoadingErrorState: React.FC<LoadingErrorStateProps> = ({
   name,
   token
 }) => {
-  // 加载状态显示骨架屏
+  // 読み込み中の状態でスケルトンスクリーンを表示
   if (loading) {
     return (
-      <Card style={{ 
+      <Card style={{
         borderRadius: token.borderRadiusLG,
         boxShadow: token.boxShadowTertiary
       }}>
@@ -198,11 +198,11 @@ const LoadingErrorState: React.FC<LoadingErrorStateProps> = ({
     );
   }
 
-  // 根据错误类型显示不同的错误信息
+  // エラーの種類に応じて異なるエラー表示を行う
   if (error) {
     if (error.includes('不存在') || error.includes('路径')) {
       return (
-        <Card 
+        <Card
           style={{
             borderRadius: token.borderRadiusLG,
             overflow: 'hidden',
@@ -210,7 +210,7 @@ const LoadingErrorState: React.FC<LoadingErrorStateProps> = ({
             padding: token.paddingLG
           }}
         >
-          <RepositoryInfoState 
+          <RepositoryInfoState
             owner={owner}
             name={name}
             token={token}
@@ -220,8 +220,8 @@ const LoadingErrorState: React.FC<LoadingErrorStateProps> = ({
     }
 
     return (
-      <Card 
-        style={{ 
+      <Card
+        style={{
           borderRadius: token.borderRadiusLG,
           overflow: 'hidden',
           boxShadow: token.boxShadowTertiary
@@ -230,24 +230,24 @@ const LoadingErrorState: React.FC<LoadingErrorStateProps> = ({
         <Result
           status="warning"
           icon={<FileExclamationOutlined style={{ color: token.colorWarning }} />}
-          title={<Typography.Title level={3} style={{ color: token.colorTextHeading }}>无法加载文档内容</Typography.Title>}
+          title={<Typography.Title level={3} style={{ color: token.colorTextHeading }}>ドキュメントの読み込みに失敗しました</Typography.Title>}
           subTitle={<Text type="secondary">{error}</Text>}
           extra={[
             <Link key="back" href={`/${owner}/${name}`}>
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 icon={<ArrowLeftOutlined />}
                 style={{ marginRight: token.marginSM }}
               >
-                返回仓库概览
+                リポジトリ概要に戻る
               </Button>
             </Link>,
-            <Button 
-              key="retry" 
+            <Button
+              key="retry"
               icon={<ReloadOutlined />}
               onClick={() => window.location.reload()}
             >
-              重新加载
+              再読み込み
             </Button>
           ]}
         />
@@ -258,4 +258,4 @@ const LoadingErrorState: React.FC<LoadingErrorStateProps> = ({
   return null;
 };
 
-export default LoadingErrorState; 
+export default LoadingErrorState;

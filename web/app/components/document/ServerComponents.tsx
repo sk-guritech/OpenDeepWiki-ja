@@ -7,20 +7,20 @@ interface ServerLoadingErrorStateProps {
   name: string;
 }
 
-// 简化版的加载错误状态组件，用于服务器组件
+// サーバーコンポーネント用の簡易ロードエラー状態コンポーネント
 export function ServerLoadingErrorState({
   loading,
   error,
   owner,
   name
 }: ServerLoadingErrorStateProps) {
-  // 加载状态
+  // 読み込み中の状態
   if (loading) {
     return (
-      <div style={{ 
-        padding: '24px', 
+      <div style={{
+        padding: '24px',
         background: '#fff',
-        borderRadius: '8px', 
+        borderRadius: '8px',
         boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
         minHeight: '300px'
       }}>
@@ -33,19 +33,19 @@ export function ServerLoadingErrorState({
     );
   }
 
-  // 错误状态
+  // エラー状態
   if (error) {
     return (
-      <div style={{ 
-        padding: '32px 24px', 
+      <div style={{
+        padding: '32px 24px',
         textAlign: 'center',
         background: '#fff',
-        borderRadius: '8px', 
+        borderRadius: '8px',
         boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
         minHeight: '300px'
       }}>
         <div style={{ fontSize: '24px', marginBottom: '16px', color: '#000000d9' }}>
-          {error.includes('不存在') ? '未找到您请求的文档' : '加载失败'}
+          {error.includes('不存在') ? 'リクエストされたドキュメントが見つかりませんでした' : '読み込みに失敗しました'}
         </div>
         <div style={{ fontSize: '14px', color: '#00000073', marginBottom: '24px' }}>
           {error}
@@ -60,7 +60,7 @@ export function ServerLoadingErrorState({
             textDecoration: 'none',
             marginRight: '8px'
           }}>
-            返回仓库概览
+            リポジトリ概要に戻る
           </Link>
           {error.includes('不存在') && (
             <Link href="/" style={{
@@ -72,7 +72,7 @@ export function ServerLoadingErrorState({
               borderRadius: '4px',
               textDecoration: 'none'
             }}>
-              返回首页
+              ホームに戻る
             </Link>
           )}
         </div>
@@ -81,4 +81,4 @@ export function ServerLoadingErrorState({
   }
 
   return null;
-} 
+}

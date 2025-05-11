@@ -108,11 +108,11 @@ export default function RepositoryLayoutClient({
     navigator.clipboard.writeText(mcpJsonString)
       .then(() => {
         setCopySuccess(true);
-        message.success('配置已复制到剪贴板');
+        message.success('設定をクリップボードにコピーしました');
         setTimeout(() => setCopySuccess(false), 3000);
       })
       .catch(() => {
-        message.error('复制失败，请手动复制');
+        message.error('コピーに失敗しました。手動でコピーしてください');
       });
   };
 
@@ -287,8 +287,8 @@ export default function RepositoryLayoutClient({
               </Typography.Title>
               {initialCatalogData?.progress !== undefined && initialCatalogData?.progress < 100 && (
                 <Flex align="center" gap={token.marginXS}>
-                  <Progress 
-                    percent={initialCatalogData?.progress || 0} 
+                  <Progress
+                    percent={initialCatalogData?.progress || 0}
                     size="small"
                     style={{
                       width: '80px',
@@ -310,7 +310,7 @@ export default function RepositoryLayoutClient({
                 onClick={() => setIsMCPModalVisible(true)}
                 size={isMobile ? "small" : "middle"}
               >
-                添加MCP
+                MCPを追加
               </Button>
               {initialLastUpdated && (
                 <Text type="secondary" style={{
@@ -328,7 +328,7 @@ export default function RepositoryLayoutClient({
           title={
             <Flex align="center" gap={token.marginXS}>
               <ApiOutlined style={{ color: token.colorPrimary }} />
-              <span>MCP接入教程</span>
+              <span>MCP接続チュートリアル</span>
             </Flex>
           }
           open={isMCPModalVisible}
@@ -341,22 +341,22 @@ export default function RepositoryLayoutClient({
             <Alert
               type="info"
               showIcon
-              message="OpenDeepWiki支持MCP（ModelContextProtocol）"
+              message="OpenDeepWikiはMCP（ModelContextProtocol）をサポートします"
               description={
                 <ul style={{ paddingLeft: token.paddingLG, margin: `${token.marginXS}px 0` }}>
-                  <li>支持单仓库提供MCPServer，针对单个仓库进行分析</li>
-                  <li>通过OpenDeepWiki作为MCPServer，您可以方便地对开源项目进行分析和理解</li>
+                  <li>MCPサーバーをリポジトリ単位で提供し、個別リポジトリの解析を可能にします</li>
+                  <li>OpenDeepWikiをMCPサーバーとして使用することで、オープンソースプロジェクトの解析と理解が容易になります</li>
                 </ul>
               }
               style={{ marginBottom: token.marginMD }}
             />
 
             <Card
-              title="使用配置"
+              title="設定の使用方法"
               style={{ marginBottom: token.marginMD }}
             >
               <Paragraph style={{ marginBottom: token.marginSM }}>
-                下面是Cursor的使用方式：
+                以下はCursorの使用方法です：
               </Paragraph>
 
               <div style={{
@@ -374,7 +374,7 @@ export default function RepositoryLayoutClient({
                 }}>
                   {mcpJsonString}
                 </pre>
-                <Tooltip title={copySuccess ? "已复制" : "复制配置"}>
+                <Tooltip title={copySuccess ? "コピー済み" : "設定をコピー"}>
                   <Button
                     type="text"
                     icon={copySuccess ? <CheckOutlined style={{ color: token.colorSuccess }} /> : <CopyOutlined />}
@@ -389,22 +389,22 @@ export default function RepositoryLayoutClient({
               </div>
 
               <Flex vertical gap={token.marginSM}>
-                <Text strong>配置说明：</Text>
+                <Text strong>設定説明：</Text>
                 <ul style={{ paddingLeft: token.paddingLG, margin: 0 }}>
-                  <li><Text code>owner</Text>: 是仓库组织或拥有者的名称</li>
-                  <li><Text code>name</Text>: 是仓库的名称</li>
+                  <li><Text code>owner</Text>：リポジトリの組織または所有者の名前です</li>
+                  <li><Text code>name</Text>：リポジトリの名前です</li>
                 </ul>
               </Flex>
             </Card>
 
             <Card
-              title="测试案例"
+              title="テストケース"
             >
               <Paragraph>
-                添加好仓库以后尝试进行测试提问（注意，请保证仓库已经处理完成）：
+                リポジトリを追加した後、テスト質問を試してください（注意：リポジトリが処理済みであることを確認してください）：
               </Paragraph>
               <Paragraph strong style={{ color: token.colorPrimary }}>
-                OpenDeepWiki是什么？
+                OpenDeepWikiとは？
               </Paragraph>
               <div style={{
                 width: '100%',
@@ -417,7 +417,7 @@ export default function RepositoryLayoutClient({
               }}>
                 <img
                   src="/mcp.png"
-                  alt="MCP测试效果"
+                  alt="MCPテスト結果"
                   style={{
                     width: '100%',
                     height: 'auto',
@@ -461,7 +461,7 @@ export default function RepositoryLayoutClient({
                 <Flex
                   align="center"
                   justify="space-between"
-                  style={{ 
+                  style={{
                     padding: `0 ${token.paddingXS}px ${token.paddingXS}px`,
                     marginBottom: token.marginXS
                   }}
@@ -471,7 +471,7 @@ export default function RepositoryLayoutClient({
                       type="text"
                       icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                       onClick={() => setCollapsed(!collapsed)}
-                      style={{ 
+                      style={{
                         fontSize: token.fontSizeLG,
                         marginLeft: token.marginXS
                       }}
@@ -498,7 +498,7 @@ export default function RepositoryLayoutClient({
                     }}
                   >
                     <HomeOutlined style={{ marginRight: token.marginXS }} />
-                    <span>概览</span>
+                    <span>概要</span>
                   </Link>
 
                   <Divider style={{ margin: `0`, padding: '0' }} />
@@ -519,7 +519,7 @@ export default function RepositoryLayoutClient({
                       marginBottom: token.marginXS,
                     }}
                   >
-                    <span>更新日志</span>
+                    <span>更新履歴</span>
                   </Link>
                 </Flex>
               </div>
@@ -560,7 +560,7 @@ export default function RepositoryLayoutClient({
             <Breadcrumb
               items={generateBreadcrumb()}
               style={{
-                marginBottom: token.marginLG,
+                marginBottom: token.paddingLG,
                 fontSize: token.fontSizeSM
               }}
             />
@@ -575,7 +575,7 @@ export default function RepositoryLayoutClient({
             </div>
           </Content>
         </Layout>
-        
+
         <Footer style={{
           textAlign: 'center',
           background: token.colorBgContainer,
@@ -613,4 +613,4 @@ export default function RepositoryLayoutClient({
       )}
     </ConfigProvider>
   );
-} 
+}
