@@ -69,7 +69,7 @@ export default function RootLayout({
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || '';
 
   return (
-    <html lang="zh-CN">
+    <html lang="ja">
       <head>
         <meta name="msvalidate.01" content="61D1D1BFCB7FDB548E411C30FC69B058" />
         <meta name="baidu-site-verification" content="44a79feb3bf1e77660bdbc00e1808896" />
